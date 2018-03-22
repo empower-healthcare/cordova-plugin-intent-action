@@ -24,7 +24,7 @@ public class IntentActionPlugin extends CordovaPlugin {
                 setOptions(intent, args.getString(1));
             }
 
-            if (intentAction.equals("android.settings.APP_NOTIFICATION_SETTINGS") {
+            if (intentAction.equals("android.settings.APP_NOTIFICATION_SETTINGS")) {
                 Context context = this.cordova.getActivity().getApplicationContext();
                 if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.N_MR1) {
                     intent.putExtra("android.provider.extra.APP_PACKAGE", context.getPackageName());
