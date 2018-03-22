@@ -1,7 +1,9 @@
 package ngocdaothanh.cordova.plugins;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -20,6 +22,16 @@ public class IntentActionPlugin extends CordovaPlugin {
             Intent intent = new Intent(intentAction);
             if (args.length() == 2) {
                 setOptions(intent, args.getString(1));
+            }
+
+            if (intentAction.equals("android.settings.APP_NOTIFICATION_SETTINGS") {
+                Context context = this.cordova.getActivity().getApplicationContext();
+                if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.N_MR1) {
+                    intent.putExtra("android.provider.extra.APP_PACKAGE", context.getPackageName());
+                } else {
+                    intent.putExtra("app_package", context.getPackageName());
+                    intent.putExtra("app_uid", context.getApplicationInfo().uid);
+                }
             }
 
             this.cordova.getActivity().startActivity(intent);
