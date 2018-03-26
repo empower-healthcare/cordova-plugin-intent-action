@@ -19,24 +19,26 @@ public class IntentActionPlugin extends CordovaPlugin {
         if (action.equals("startIntentAction")) {
             String intentAction = args.getString(0);
 
-            Intent intent = new Intent(intentAction);
-            if (args.length() == 2) {
-                setOptions(intent, args.getString(1));
-            }
-
             if (intentAction.equals("android.settings.APP_NOTIFICATION_SETTINGS")) {
+                Intent intent = new Intent();
                 Context context = this.cordova.getActivity().getApplicationContext();
                 if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.N_MR1) {
+                    intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
                     intent.putExtra("android.provider.extra.APP_PACKAGE", context.getPackageName());
-                } else {
+                } else if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
                     intent.putExtra("app_package", context.getPackageName());
                     intent.putExtra("app_uid", context.getApplicationInfo().uid);
+                } else {
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+                    intent.setData(Uri.parse("package:" + context.getPackageName()));
                 }
-            }
-
-            if (intentAction.equals("android.settings.APPLICATION_DETAILS_SETTINGS")) {
-                Context context = this.cordova.getActivity().getApplicationContext();
-                intent.setData(Uri.parse("package:" + context.getPackageName()));
+            } else {
+                Intent intent = new Intent(intentAction);
+                if (args.length() == 2) {
+                    setOptions(intent, args.getString(1));
+                }
             }
 
             this.cordova.getActivity().startActivity(intent);
