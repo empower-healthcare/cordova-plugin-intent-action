@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -34,14 +35,14 @@ public class IntentActionPlugin extends CordovaPlugin {
                     intent.addCategory(Intent.CATEGORY_DEFAULT);
                     intent.setData(Uri.parse("package:" + context.getPackageName()));
                 }
+                this.cordova.getActivity().startActivity(intent);
             } else {
                 Intent intent = new Intent(intentAction);
                 if (args.length() == 2) {
                     setOptions(intent, args.getString(1));
                 }
+                this.cordova.getActivity().startActivity(intent);
             }
-
-            this.cordova.getActivity().startActivity(intent);
 
             callbackContext.success(intentAction);
             return true;
