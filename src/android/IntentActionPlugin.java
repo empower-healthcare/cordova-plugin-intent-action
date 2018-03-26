@@ -35,6 +35,7 @@ public class IntentActionPlugin extends CordovaPlugin {
             }
 
             if (intentAction.equals("android.settings.APPLICATION_DETAILS_SETTINGS")) {
+                Context context = this.cordova.getActivity().getApplicationContext();
                 intent.setData(Uri.parse("package:" + context.getPackageName()));
             }
 
