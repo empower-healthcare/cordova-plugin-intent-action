@@ -36,6 +36,9 @@ public class IntentActionPlugin extends CordovaPlugin {
                     intent.setData(Uri.parse("package:" + context.getPackageName()));
                 }
                 this.cordova.getActivity().startActivity(intent);
+            } else if (intentAction.equals("android.settings.APP_DETAILS_SETTINGS")) {
+                Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:"+this.cordova.getActivity().getPackageName()));
+                this.cordova.getActivity().startActivity(intent);
             } else {
                 Intent intent = new Intent(intentAction);
                 if (args.length() == 2) {
